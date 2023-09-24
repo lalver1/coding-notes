@@ -17,9 +17,9 @@ git push origin main
 git switch -c prepare-release
 ```
 
-2. Update **p**yproject.toml, **C**HANGELOG, **R**EADME.
+3. Update **p**yproject.toml, **C**HANGELOG, **R**EADME.
 
-pyproject.toml
+- pyproject.toml
 
 ```
 [tool.poetry]
@@ -27,7 +27,7 @@ name = "project-name"
 version = "MAJOR.MINOR.PATCH"
 ```
 
-changelog.md
+- changelog.md
 
 ```
 ## [MAJOR.MINOR.PATCH] - YYYY-MM-DD
@@ -40,7 +40,7 @@ changelog.md
   https://github.com/organization/project/releases/tag/MAJOR.MINOR.PATCH
 ```
 
-README.md
+- README.md
 
 ```
 Install the application using `pip`:
@@ -49,7 +49,7 @@ pip install git+https://github.com/organization/project@MAJOR.MINOR.PATCH
 
 ```
 
-3. Commit using this sample commit message
+4. Commit using this sample commit message
 
 ```
 Prepare codebase for MAJOR.MINOR.PATCH release
@@ -57,26 +57,26 @@ Prepare codebase for MAJOR.MINOR.PATCH release
 Prepares the codebase for the MAJOR.MINOR.PATCH release.
 ```
 
-4. Create PR with a required reviewer
+5. Create PR with a required reviewer
 
 ```
 gh pr create --fill -a @me -r reviewer'sgithubaccount
 ```
 
-5. After PR is approved, update `main` branch (and update our fork while we are at it)
+6. After PR is approved, update `main` branch (and update our fork while we are at it)
 
 ```
 git pull upstream main
 git push origin main
 ```
 
-6. Create the current version's tag
+7. Create the current version's tag
 
 ```
 git tag -am MAJOR.MINOR.PATCH "MAJOR.MINOR.PATCH"
 ```
 
-7. Push tags upstream
+8. Push tags upstream
 
 ```
 git push upstream --tags
