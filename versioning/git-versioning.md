@@ -27,7 +27,7 @@ name = "project-name"
 version = "MAJOR.MINOR.PATCH"
 ```
 
-- changelog.md
+- CHANGELOG.md
 
 ```
 ## [MAJOR.MINOR.PATCH] - YYYY-MM-DD
