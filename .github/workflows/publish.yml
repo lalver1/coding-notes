@@ -1,0 +1,32 @@
+name: Publish Site
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+    
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+      
+      - name: Set up the project
+        run: uv sync
+
+      - name: Publish to GitHub Pages
+        run: |
+          uv run mkdocs gh-deploy --force
