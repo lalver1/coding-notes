@@ -1,0 +1,9 @@
+[project]
+name = "coding-notes"
+version = "0.1.0"
+description = "Personal coding notes site"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mkdocs-material>=9.6.17",
+]
