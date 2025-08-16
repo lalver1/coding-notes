@@ -1,4 +1,4 @@
-site_name: My Coding Notes
+site_name: Pragmatic Dev Snippets
 site_url: https://lalver1.github.io/coding-notes
 repo_url: https://github.com/lalver1/coding-notes
 
@@ -19,9 +19,10 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Collaboration:
-    - GitHub: github-tools/review.md
   - Version Control:
-    - Release Management: versioning/git-versioning.md
-  - Docker: docker.md
+    - Git: version-control/git.md
+    - GitHub: version-control/github.md
+  - Docker:
+    - Build: docker/build.md
+    - Compose: docker/compose.md
 
