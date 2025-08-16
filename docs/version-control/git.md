@@ -1,3 +1,4 @@
+
 # Using tags for Versioning in Git
 
 ## Steps to release a version following [SemVer](https://semver.org/)
