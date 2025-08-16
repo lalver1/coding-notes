@@ -1,0 +1,27 @@
+site_name: My Coding Notes
+site_url: https://lalver1.github.io/coding-notes
+repo_url: https://github.com/lalver1/coding-notes
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.path
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - def_list
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Home: index.md
+  - Collaboration:
+    - GitHub: github-tools/review.md
+  - Version Control:
+    - Release Management: versioning/git-versioning.md
+  - Docker: docker.md
+
