@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://lalver1.github.io/coding-notes/</loc>
+         <lastmod>2025-08-16</lastmod>
+    </url>
+    <url>
+         <loc>https://lalver1.github.io/coding-notes/docker/build/</loc>
+         <lastmod>2025-08-16</lastmod>
+    </url>
+    <url>
+         <loc>https://lalver1.github.io/coding-notes/docker/compose/</loc>
+         <lastmod>2025-08-16</lastmod>
+    </url>
+    <url>
+         <loc>https://lalver1.github.io/coding-notes/version-control/git/</loc>
+         <lastmod>2025-08-16</lastmod>
+    </url>
+    <url>
+         <loc>https://lalver1.github.io/coding-notes/version-control/github/</loc>
+         <lastmod>2025-08-16</lastmod>
+    </url>
+</urlset>
