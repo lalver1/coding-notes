@@ -5,8 +5,11 @@ repo_url: https://github.com/lalver1/coding-notes
 theme:
   name: material
   features:
-    - navigation.sections
+    - navigation.indexes
     - navigation.path
+    - navigation.sections
+    - navigation.tracking
+    - toc.follow
 
 markdown_extensions:
   - admonition
@@ -20,9 +23,17 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Version Control:
+    - version-control/index.md
     - Git: version-control/git.md
     - GitHub: version-control/github.md
   - Docker:
+    - docker/index.md
     - Build: docker/build.md
     - Compose: docker/compose.md
+  - Cloud:
+    - cloud/index.md
+    - Azure: cloud/azure.md
+    - AWS: cloud/aws.md
 
+extra_css:
+  - extra.css
