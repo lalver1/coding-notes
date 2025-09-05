@@ -1,0 +1,1 @@
+Cover Azure and AWS. Focus on terraform for Azure and CloudFormation for AWS.
