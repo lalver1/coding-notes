@@ -27,7 +27,7 @@ You will typically be asked to select a subscription.
 
 ## Set up an Azure Container App using Terraform
 
-Terraform is an infrastructure as code tool that lets you build, change, and version infrastructure. At a high level, it 
+Terraform is an infrastructure as code (IaC) tool that lets you build, change, and version infrastructure. At a high level, it 
 consists of `provider`s to establish the connection to a cloud provider's APIs, `resource`s that define the components
 of the infrastructure you want to manage, and `data` sources that allow you to query information about existing
 infrastructure or external data for use in Terraform configurations.
@@ -473,9 +473,93 @@ This is a nice approach because Terraform knows how to use the secret without ex
 2. modify the `.tf` file to define the new secret using `data`
 3. deploy the infra (merge the PR, for example; or redeploy manually)
 
+## Updating infrastructure
+
+To test out new infrastructure, sometimes it is handy to just add the new resources in the Azure Portal. Doing this **does not directly impact your Terraform state file.** The state file is a record of what **Terraform believes it manages**, not a live log of your Azure subscription. When you add resources manually, they are simply "unmanaged" and invisible to Terraform.
+
+The interaction between the state file and the currently deployed infrastructure happens the next time you run `terraform plan`.
+
+### Scenarios: IaC vs. manual resources
+
+This ["out-of-band" change](https://www.hashicorp.com/en/resources/terraform-config-drift-how-to-handle-out-of-band-infrastructure-changes) (working outside Terraform) creates three common scenarios.
+
+#### Scenario 1: "Unmanaged" resource
+
+You create a new, separate resource in the portal. For example, your Terraform manages `Resource-A`, and you manually create `Resource-B`.
+
+  * **Interaction:** When you run `terraform plan`, Terraform reads its state file, sees it's supposed to manage `Resource-A`, and checks that `Resource-A` matches the code. It **does not know or care** that `Resource-B` exists.
+  * **Result:** The plan will show **"No changes."** Your manually-created resource is safe and completely ignored by Terraform.
+
+#### Scenario 2: "Configuration drift"
+
+You go into the portal and **modify a resource that Terraform *does* manage.** For example, your code defines a database SKU as "Standard", and you manually change it to "Premium" in the portal.
+
+  * **Interaction:** When you run `terraform plan`, Terraform reads its state (which says "Standard") and compares it to the *actual* resource in Azure (which is now "Premium"). Terraform identifies this difference.
+  * **Result:** The plan will show one resource "to be updated." If you run `terraform apply`, Terraform will **"fix" the drift** by changing the SKU *back to "Standard"*, wiping out your manual change since Terraform's code is always the source of truth.
+
+#### Scenario 3: "Name collision"
+
+You manually create a resource, (e.g., a storage account named `myteststorage`). Later, you (or a teammate) add a *new* resource to your Terraform code with that *exact same name*.
+
+  * **Interaction:** You run `terraform plan`. The plan will show one resource "to be created."
+  * **Result:** When you run `terraform apply`, it will **fail**. Azure's API will return a `ResourceAlreadyExists` error. Terraform will not automatically "take over" the resource; it only knows how to create one, and it can't. This scenario is the primary reason for Terraform's "Import" workflow, similar to the storage account creation step described in the [Deploying Resources](#deploying-resources) section.
+
+### Workflow: Deleting your manual resources
+
+Ater you're done testing, you can start the "cleanup" phase.
+
+1.  **Identify the Resources:** You must manually track what you created. The easiest way is to put all your test resources into a single, separate **Resource Group** (e.g., `rg-my-temp-tests`).
+2.  **Delete the Resources:**
+      * **If you used a separate resource group:** Simply delete that one resource group in the Azure Portal. Everything inside it will be deleted. This is the cleanest method.
+      * **If you scattered resources:** You must go to the portal and delete each resource one by one.
+3.  **Run `terraform plan`:** After deleting, run `plan` again. It should still show **"No changes,"** proving that your cleanup didn't affect your Terraform-managed infrastructure.
+
+### Workflow: Keep importing your manual resources
+
+You created a resource, liked it, and now want Terraform to manage it.
+
+#### Step 1: Write the Terraform code
+
+Go to your `.tf` files and write a new `resource` block that **exactly matches** the resource you created in the portal. You must match the `name`, `location`, `sku`, and all other relevant arguments.
+
+```hcl
+# In, for example, your storage.tf file
+resource "azurerm_storage_account" "my_new_sa" {
+  name                     = "myteststorage" # Must match portal
+  resource_group_name      = "rg-aca-web"
+  location                 = "West US"
+  account_tier             = "Standard"    # Must match portal
+  account_replication_type = "LRS"       # Must match portal
+  # ... and so on
+}
+```
+
+#### Step 2: Find the resource ID
+
+Go to the Azure Portal, find your resource, and copy its full **resource ID**. It will look like this:
+`/subscriptions/your-sub-id/resourceGroups/rg-aca-web/providers/Microsoft.Storage/storageAccounts/myteststorage`
+
+#### Step 3: Run `terraform import`
+
+In your terminal, run the `import` command using your **Terraform address** (from Step 1) and the **Azure ID** (from Step 2).
+
+```sh
+terraform import azurerm_storage_account.my_new_sa /subscriptions/your-sub-id/resourceGroups/rg-aca-web/providers/Microsoft.Storage/storageAccounts/myteststorage
+```
+
+Terraform will connect to Azure, read the resource, and write it into your `terraform.tfstate` file.
+
+#### Step 4: Verify with `terraform plan`
+
+This is the most important step. Run `terraform plan`.
+
+  * **If it shows "No changes."**: You are done. Your code from Step 1 exactly matched the imported resource. It is now fully managed.
+  * **If it shows "Changes to be applied."**: This is very common. It means your code from Step 1 *doesn't* exactly match. For example, the plan might want to change `account_tier` from "Standard" to "Premium". **Do not run `apply`**. Instead, go back to your `.tf` file and *fix your code* to match what was imported (e.g., change the tier in your code to "Standard").
+  * Run `terraform plan` again. Repeat until it says "No changes."
+
 ### Monitoring a Container App
 
-Azure Monitor collects and aggregates the data from every layer and component of your system across multiple Azure and non-Azure subscriptions and tenants. It stores it in a common data platform for consumption by a common set of tools that can correlate, analyze, visualize, and/or respond to the data. You can also integrate other Microsoft and non-Microsoft tools.
+Azure Monitor collects and aggregates the data from every layer and component of your system across multiple Azure and non-Azure subscriptions and tenants. It stores it in a common data platform for consumption by a common set of tools that can correlate, analyze, visualize, and/or respond to the data.
 
 We will focus on the following setup:
 
