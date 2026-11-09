@@ -1,0 +1,1719 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lalver1.github.io/coding-notes/cloud/azure/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../aws/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Azure - Pragmatic Dev Snippets</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#azure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pragmatic Dev Snippets" class="md-header__button md-logo" aria-label="Pragmatic Dev Snippets" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pragmatic Dev Snippets
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Azure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/lalver1/coding-notes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pragmatic Dev Snippets" class="md-nav__button md-logo" aria-label="Pragmatic Dev Snippets" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Pragmatic Dev Snippets
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/lalver1/coding-notes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../version-control/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Version Control
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Version Control
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version-control/git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version-control/github/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../docker/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Build
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/compose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compose
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Cloud
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Cloud
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Azure
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Azure
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#azure-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure CLI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-an-azure-container-app-using-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set up an Azure Container App using Terraform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set up an Azure Container App using Terraform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initial Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chickenegg-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chicken/egg problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updating-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenarios-iac-vs-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenarios: IaC vs. manual resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenarios: IaC vs. manual resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-unmanaged-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: "Unmanaged" resource
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-configuration-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: "Configuration drift"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-name-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: "Name collision"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-deleting-your-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow: Deleting your manual resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-keep-importing-your-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow: Keep importing your manual resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow: Keep importing your manual resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-terraform-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Write the Terraform code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-find-the-resource-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Find the resource ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-run-terraform-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Run terraform import
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-verify-with-terraform-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Verify with terraform plan
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-a-container-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring a Container App
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aws/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#azure-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure CLI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commands
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-up-an-azure-container-app-using-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Set up an Azure Container App using Terraform
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set up an Azure Container App using Terraform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initial Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploying-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#version-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Version control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chickenegg-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chicken/egg problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updating-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating infrastructure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating infrastructure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenarios-iac-vs-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenarios: IaC vs. manual resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scenarios: IaC vs. manual resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-unmanaged-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: "Unmanaged" resource
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-configuration-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: "Configuration drift"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-3-name-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: "Name collision"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-deleting-your-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow: Deleting your manual resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-keep-importing-your-manual-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow: Keep importing your manual resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Workflow: Keep importing your manual resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-terraform-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Write the Terraform code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-find-the-resource-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Find the resource ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-run-terraform-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Run terraform import
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-verify-with-terraform-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Verify with terraform plan
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-a-container-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring a Container App
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="azure">Azure</h1>
+<p>The <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/overview">Microsoft Cloud Adoption Framework for Azure</a> provides a good overview of Azure from the point of view of setting up a cloud environment. Specifically, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/">Ready (Prepare for Cloud adoption)</a> section explains the following concepts:</p>
+<ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/azure-ad-define">Tenant</a>: The top-level way to manage identities and access in <a href="https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra">Microsoft Entra</a>.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/identity">Account</a>: A secure and well-managed identity in <a href="https://learn.microsoft.com/en-us/entra/fundamentals/what-is-entra">Microsoft Entra ID</a>. Entra ID is a product of Entra and it provides identity and access management in Azure.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-subscriptions">Subscription</a>: A unit of management, billing, and scale within Azure.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/">Landing zone</a>: An environment for hosting your Azure resources</li>
+</ul>
+<p>In addition, the <a href="https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming">naming convention section</a> provides useful information on how to name resources.</p>
+<h2 id="azure-cli">Azure CLI</h2>
+<h3 id="configuration">Configuration</h3>
+<p>In your home folder, <code>~/.azure/azureProfile.json</code>, you can see <code>tenant</code>, <code>user</code>, and <code>subscription</code> information.</p>
+<h3 id="commands">Commands</h3>
+<p>To start an Azure CLI working session, log in to the Azure CLI using:</p>
+<div class="highlight"><pre><span></span><code>az<span class="w"> </span>login
+</code></pre></div>
+<p>You will typically be asked to select a subscription.</p>
+<h2 id="set-up-an-azure-container-app-using-terraform">Set up an Azure Container App using Terraform</h2>
+<p>Terraform is an infrastructure as code (IaC) tool that lets you build, change, and version infrastructure. At a high level, it 
+consists of <code>provider</code>s to establish the connection to a cloud provider's APIs, <code>resource</code>s that define the components
+of the infrastructure you want to manage, and <code>data</code> sources that allow you to query information about existing
+infrastructure or external data for use in Terraform configurations.</p>
+<p>For this guide we will use the following Terraform configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">required_providers</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">azurerm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">source</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hashicorp/azurerm&quot;</span>
+<span class="w">      </span><span class="na">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~&gt; 4.0&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nb">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">source</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hashicorp/random&quot;</span>
+<span class="w">      </span><span class="na">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~&gt; 3.5&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kr">backend</span><span class="w"> </span><span class="nv">&quot;azurerm&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">resource_group_name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rg-aca-web&quot;</span>
+<span class="w">        </span><span class="na">storage_account_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;salalver1al&quot;</span>
+<span class="w">        </span><span class="na">container_name</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tfstate&quot;</span>
+<span class="w">        </span><span class="na">key</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terraform.tfstate&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;azurerm&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nb">features</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="c1"># Get information about the current Azure client (logged-in identity)</span>
+<span class="kr">data</span><span class="w"> </span><span class="nc">&quot;azurerm_client_config&quot;</span><span class="w"> </span><span class="nv">&quot;current&quot;</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="c1"># 1. Resource group</span>
+<span class="c1"># Initially created manually to hold the tfstate storage account</span>
+<span class="c1"># Import once before the first terraform apply</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_resource_group&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rg-aca-web&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;West US&quot;</span>
+<span class="p">}</span>
+
+<span class="c1"># 2. Storage Account</span>
+<span class="c1"># Initially created manually to hold the tfstate file</span>
+<span class="c1"># Import once before the first terraform apply</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_storage_account&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                          </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;salalver1al&quot;</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">location</span><span class="w">                      </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">account_tier</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Standard&quot;</span>
+<span class="w">  </span><span class="na">account_replication_type</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;LRS&quot;</span>
+<span class="w">  </span><span class="na">public_network_access_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="w">  </span><span class="nb">blob_properties</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">last_access_time_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">    </span><span class="na">versioning_enabled</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+
+<span class="w">    </span><span class="nb">container_delete_retention_policy</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nb">delete_retention_policy</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">7</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">network_rules</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">default_action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Deny&quot;</span>
+<span class="w">    </span><span class="na">bypass</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;AzureServices&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 3. Container App Environment</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_container_app_environment&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web-aca-env&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="p">}</span>
+
+<span class="c1"># 4. Container App - Web</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_container_app&quot;</span><span class="w"> </span><span class="nv">&quot;web&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;aca-web&quot;</span>
+<span class="w">  </span><span class="na">container_app_environment_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_container_app_environment.main.id</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">revision_mode</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Single&quot;</span>
+
+<span class="w">  </span><span class="nb">ingress</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">external_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">    </span><span class="na">target_port</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">50505</span><span class="c1"> # match the port the Flask app listens on</span>
+<span class="w">    </span><span class="nb">traffic_weight</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">latest_revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">      </span><span class="na">percentage</span><span class="o">=</span><span class="m">100</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="na">transport</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">template</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web&quot;</span>
+<span class="w">      </span><span class="na">image</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ghcr.io/lalver1/azure-learning:${var.container_tag}&quot;</span>
+<span class="w">      </span><span class="na">cpu</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">0.5</span>
+<span class="w">      </span><span class="na">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0Gi&quot;</span>
+
+<span class="w">    </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;APPLICATIONINSIGHTS_CONNECTION_STRING&quot;</span>
+<span class="w">        </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_application_insights.main.connection_string</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 5. Log Analytics Workspace (needed for App Insights)</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_log_analytics_workspace&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;law-web&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">sku</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PerGB2018&quot;</span>
+<span class="w">  </span><span class="na">retention_in_days</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">30</span>
+<span class="p">}</span>
+
+<span class="c1"># 6. Application Insights</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_application_insights&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;appi-web&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">application_type</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web&quot;</span>
+<span class="w">  </span><span class="na">workspace_id</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_log_analytics_workspace.main.id</span>
+<span class="p">}</span>
+
+<span class="c1"># 7. Key Vault</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_key_vault&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;kv-al&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">tenant_id</span><span class="w">                   </span><span class="o">=</span><span class="w"> </span><span class="nv">data.azurerm_client_config.current.tenant_id</span>
+<span class="w">  </span><span class="na">sku_name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;standard&quot;</span>
+
+<span class="w">  </span><span class="nb">access_policy</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">tenant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">data.azurerm_client_config.current.tenant_id</span>
+<span class="w">    </span><span class="na">object_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">data.azurerm_client_config.current.object_id</span>
+
+<span class="w">    </span><span class="na">secret_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;Get&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;List&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Set&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Delete&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Purge&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Recover&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Backup&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Restore&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+
+<span class="w">    </span><span class="na">key_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Get&quot;, &quot;List&quot;, &quot;Create&quot;, &quot;Delete&quot;, &quot;Purge&quot;, &quot;Recover&quot;, &quot;Backup&quot;, &quot;Restore&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 8. Key Vault Secret</span>
+<span class="kr">data</span><span class="w"> </span><span class="nc">&quot;azurerm_key_vault_secret&quot;</span><span class="w"> </span><span class="nv">&quot;slack_webhook_url&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;slack-webhook-url&quot;</span>
+<span class="w">  </span><span class="na">key_vault_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_key_vault.main.id</span>
+<span class="p">}</span>
+
+<span class="c1"># 9. A secure, random key for the Azure Functions&#39; webhook URL</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;random_string&quot;</span><span class="w"> </span><span class="nv">&quot;function_key&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">length</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="m">32</span>
+<span class="w">  </span><span class="na">special</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
+<span class="p">}</span>
+
+<span class="c1"># 10. Container App - Azure Functions</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_container_app&quot;</span><span class="w"> </span><span class="nv">&quot;funcs&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;aca-funcs&quot;</span>
+<span class="w">  </span><span class="na">container_app_environment_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_container_app_environment.main.id</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">revision_mode</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Single&quot;</span>
+
+<span class="c1">  # Securely store secrets that will be injected as environment variables</span>
+<span class="w">  </span><span class="nb">secret</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;slack-webhook-url-secret&quot;</span>
+<span class="w">    </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">data.azurerm_key_vault_secret.slack_webhook_url.value</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="nb">secret</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;function-key-secret&quot;</span>
+<span class="w">    </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">random_string.function_key.result</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="nb">secret</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;appinsights-api-key-secret&quot;</span>
+<span class="w">    </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_application_insights_api_key.main.api_key</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">template</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;functions&quot;</span>
+<span class="w">      </span><span class="na">image</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ghcr.io/lalver1/azure-functions:${var.container_tag}&quot;</span>
+<span class="w">      </span><span class="na">cpu</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">0.25</span>
+<span class="w">      </span><span class="na">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.5Gi&quot;</span>
+
+<span class="w">      </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;APPLICATIONINSIGHTS_CONNECTION_STRING&quot;</span>
+<span class="w">        </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_application_insights.main.connection_string</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;AzureWebJobsStorage&quot;</span>
+<span class="w">        </span><span class="na">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_storage_account.main.primary_connection_string</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SLACK_WEBHOOK_URL&quot;</span>
+<span class="w">        </span><span class="na">secret_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;slack-webhook-url-secret&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;AZURE_FUNCTION_KEY&quot;</span>
+<span class="w">        </span><span class="na">secret_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;function-key-secret&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="nb">env</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;APPINSIGHTS_API_KEY&quot;</span>
+<span class="w">        </span><span class="na">secret_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;appinsights-api-key-secret&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="na">min_replicas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="na">max_replicas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">ingress</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">external_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">    </span><span class="na">target_port</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">80</span>
+<span class="w">    </span><span class="na">transport</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;auto&quot;</span>
+
+<span class="w">    </span><span class="nb">traffic_weight</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">percentage</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="m">100</span>
+<span class="w">      </span><span class="na">latest_revision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">identity</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;SystemAssigned&quot;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 11. Action Group that posts to the Functions App</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_monitor_action_group&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ag-funcapp-webhook&quot;</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">short_name</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;funcag&quot;</span>
+
+<span class="w">  </span><span class="nb">webhook_receiver</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;funcapp-webhook&quot;</span>
+<span class="w">    </span><span class="na">service_uri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://${azurerm_container_app.funcs.ingress[0].fqdn}/api/alert_to_slack?CODE=${random_string.function_key.result}&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 12. Log Search alert rule</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_monitor_scheduled_query_rules_alert_v2&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;qr-error&quot;</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.name</span>
+<span class="w">  </span><span class="na">location</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_resource_group.main.location</span>
+<span class="w">  </span><span class="na">scopes</span><span class="w">              </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">azurerm_application_insights.main.id</span><span class="p">]</span>
+
+<span class="w">  </span><span class="na">description</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Alerts when any exception is logged in Application Insights.&quot;</span>
+<span class="w">  </span><span class="na">display_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Web Flask App Error Alert&quot;</span>
+<span class="w">  </span><span class="na">enabled</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<span class="w">  </span><span class="na">severity</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">2</span>
+
+<span class="w">  </span><span class="na">evaluation_frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PT5M&quot;</span>
+<span class="w">  </span><span class="na">window_duration</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;PT5M&quot;</span>
+
+<span class="w">  </span><span class="nb">criteria</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">query</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;-</span><span class="dl">QUERY</span>
+<span class="sh">      union (exceptions | where type !has &quot;ServiceResponseError&quot;), (traces | where severityLevel &gt;= 3)</span>
+<span class="dl">    QUERY</span>
+<span class="w">    </span><span class="na">operator</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;GreaterThan&quot;</span>
+<span class="w">    </span><span class="na">threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="na">time_aggregation_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Count&quot;</span>
+
+<span class="w">    </span><span class="nb">failing_periods</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">minimum_failing_periods_to_trigger_alert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">      </span><span class="na">number_of_evaluation_periods</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">action</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">action_groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">azurerm_monitor_action_group.main.id</span><span class="p">]</span>
+<span class="w">    </span><span class="nb">custom_properties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="na">subject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;🚨 Application Error&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">lifecycle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="na">ignore_changes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">tags</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># 13. Create an API key for querying Application Insights data</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_application_insights_api_key&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;api-query-key-funcs&quot;</span>
+<span class="w">  </span><span class="na">application_insights_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">azurerm_application_insights.main.id</span>
+
+<span class="w">  </span><span class="na">read_permissions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;search&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="initial-configuration">Initial Configuration</h3>
+<p>Using the Azure console (or CLI), create a resource group (called <code>rg-aca-web</code>), a storage account (called <code>salalver1al</code> with
+<code>Public network access</code> set to <code>Enable</code> and <code>Public network access scope</code> set to <code>Enable from selected networks</code>) in the resource group, and a blob container (called <code>tfstate</code>) in the storage account. This is where Terraform's state file will be saved. Make sure to add your
+current IP address to the list of allowed IPs of the storage account.</p>
+<div class="admonition note">
+<p class="admonition-title">Terraform state</p>
+<p>Terraform uses a state file (<code>terraform.tfstate</code>) to keep track of the infrastructure it manages. It records resources you’ve created, their IDs, properties, and relationships.</p>
+<p>When you run <code>terraform plan</code> or <code>terraform apply</code>, Terraform compares your config (<code>.tf</code> files) with the current state to determine what needs to be added, changed, or destroyed. Without the state, Terraform wouldn’t know what’s already deployed.</p>
+<p>By default, Terraform keeps state locally (a <code>JSON</code> file in your project directory). This works if you’re the only one managing the infrastructure. But for real projects, using a local state is risky. It can cause collaboration issues where multiple engineers could overwrite each other’s state. If the state file is lost, Terraform loses track of your resources. In addition, it can cause security issues since the state file may contain secrets.</p>
+<p>Keeping the state file in Azure Blob storage is ideal since all team members can use the same state. It's safe, since the state is persisted in Azure, not just locally. You can take advanrtage of versioning, so with blob versioning enabled, you can roll back to an older state if needed.</p>
+</div>
+<h4 id="variables">Variables</h4>
+<p>Variables defined with the <code>variable</code> keyword in a <code>variables.tf</code> file without a default value defined are required to be passed to <code>terraform</code> via the <code>-var</code> option. Note that terraform state tracks resource values, and variables track user input. Terraform will not “reuse” your last variable input. That’s why you must supply it every run unless you save it in:</p>
+<ul>
+<li>a <code>.tfvars</code> file</li>
+<li>environment variable</li>
+<li>default value in <code>variables.tf</code></li>
+</ul>
+<h3 id="deploying-resources">Deploying resources</h3>
+<p>To deploy the resources that make up the web app:</p>
+<ul>
+<li>
+<p>Log in to the Azure CLI.</p>
+</li>
+<li>
+<p>From the folder containing the <code>.tf</code> file, initialize Terraform using:</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>init
+</code></pre></div>
+<p>Terraform downloads the AzureRM provider (<code>hashicorp/azurerm</code>) and connects to your existing storage account backend (<code>lalver1azurelearning</code>) and checks the state container (<code>tfstate</code>). It also creates a version lock file
+if one doesn't already exist. Note that if you have made changes to the terraform configuration (such as changing
+the version of the <code>azurerm</code> provider), <code>terraform init</code> will <strong>not</strong> make any changes to the state file, changes
+are only made to the state file when you run <code>apply</code>. </p>
+</li>
+<li>
+<p>Import the resource group and storage account using:</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>import<span class="w"> </span>azurerm_resource_group.main<span class="w"> </span>/subscriptions/&lt;sub_id&gt;/resourceGroups/rg-aca-web
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>import<span class="w"> </span>azurerm_storage_account.main<span class="w"> </span>/subscriptions/&lt;sub_id&gt;/resourceGroups/rg-aca-web/providers/Microsoft.Storage/storageAccounts/salalver1al
+</code></pre></div>
+<p>This tells Terraform that the resources already exist, so add them to state instead of creating them. Terraform then can start managing them.</p>
+</li>
+<li>
+<p>Preview the deployment (plan) by using</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan<span class="w"> </span>-out<span class="o">=</span>tfplan
+</code></pre></div>
+<p>This shows you exactly what resources Terraform intends to create/modify.</p>
+</li>
+<li>
+<p>Apply the plan</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>apply<span class="w"> </span>tfplan
+</code></pre></div>
+<p>This actually provisions the resources in Azure.</p>
+</li>
+</ul>
+<h3 id="version-control">Version control</h3>
+<p>After running <code>terraform init</code> ensure that you set up your version control for:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+<th>Version control?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.terraform.lock.hcl</code></td>
+<td>A dependency lock file. Records the exact provider versions (e.g. hashicorp/azurerm v3.117.1) and their checksums. Ensures reproducible deployments — so when you or a teammate run terraform init again, you all get the same provider version.</td>
+<td>Yes (or store in Azure Blob Storage)</td>
+</tr>
+<tr>
+<td><code>terraform.tfstate</code></td>
+<td>The local copy of Terraform state. By default, Terraform creates it locally.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>LICENSE.txt</code></td>
+<td>License file that comes bundled with the Terraform provider plugin (terraform-provider-azurerm).</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>terraform-provider-azurerm_v3.117.1_x5</code></td>
+<td>The actual compiled provider binary that Terraform downloaded. Platform-specific (that _x5 suffix refers to your OS/arch build). Lives in the working dir so Terraform can run. Auto-managed by terraform init.</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="chickenegg-problem">Chicken/egg problem</h3>
+<p>In the <a href="#initial-configuration">Initial Configuration</a> we solved the problem of referencing the Terraform state in code by manually creating the resource group and storage account before running a <code>plan</code> or <code>apply</code>.
+Another situation where this comes up is when reading a secret. For example, the webhook URL is a secret whose value is not defined in code, only the resource. For these situations we follow this approach:</p>
+<ol>
+<li>
+<p>On the first run, clear out all other resources and define the key vault.</p>
+<div class="highlight"><pre><span></span><code># 7. Key Vault
+resource &quot;azurerm_key_vault&quot; &quot;main&quot; {
+  name                        = &quot;kv-al&quot;
+  location                    = azurerm_resource_group.main.location
+  resource_group_name         = azurerm_resource_group.main.name
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  sku_name                    = &quot;standard&quot;
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    secret_permissions = [
+      &quot;Get&quot;,
+      &quot;List&quot;,
+      &quot;Set&quot;,
+      &quot;Delete&quot;,
+      &quot;Purge&quot;,
+      &quot;Recover&quot;,
+      &quot;Backup&quot;,
+      &quot;Restore&quot;
+    ]
+
+    key_permissions = [
+    &quot;Get&quot;, &quot;List&quot;, &quot;Create&quot;, &quot;Delete&quot;, &quot;Purge&quot;, &quot;Recover&quot;, &quot;Backup&quot;, &quot;Restore&quot;
+  ]
+  }
+}
+</code></pre></div>
+<p>and run <code>terraform apply</code> to create the KV.</p>
+</li>
+<li>
+<p>After the key vault exists, create the secret using the portal or CLI.</p>
+</li>
+<li>
+<p>Once the secret has been created, add this to the terraform definition (make sure that
+you use the exact same name for the secret as what you entered in the previous step)</p>
+<div class="highlight"><pre><span></span><code># Read the existing secret
+data &quot;azurerm_key_vault_secret&quot; &quot;slack_webhook_url&quot; {
+  name         = &quot;slack-webhook-url&quot;
+  key_vault_id = azurerm_key_vault.main.id
+}
+</code></pre></div>
+<p>and anywhere that you need to use the secret, use <code>data.azurerm_key_vault_secret.slack_webhook_url.value</code></p>
+</li>
+<li>
+<p>Run Terraform again. Now, when you run <code>terraform plan</code> or <code>terraform apply</code>, Terraform will reads the secret from the Key Vault </p>
+</li>
+</ol>
+<p>This is a nice approach because Terraform knows how to use the secret without exposing it in the Terraform state or <code>.tfvars</code>. Once the infra CI/CD is running and you need to add a new secret, for example, you can</p>
+<ol>
+<li>add the secret manually to the KV</li>
+<li>modify the <code>.tf</code> file to define the new secret using <code>data</code></li>
+<li>deploy the infra (merge the PR, for example; or redeploy manually)</li>
+</ol>
+<h2 id="updating-infrastructure">Updating infrastructure</h2>
+<p>To test out new infrastructure, sometimes it is handy to just add the new resources in the Azure Portal. Doing this <strong>does not directly impact your Terraform state file.</strong> The state file is a record of what <strong>Terraform believes it manages</strong>, not a live log of your Azure subscription. When you add resources manually, they are simply "unmanaged" and invisible to Terraform.</p>
+<p>The interaction between the state file and the currently deployed infrastructure happens the next time you run <code>terraform plan</code>.</p>
+<h3 id="scenarios-iac-vs-manual-resources">Scenarios: IaC vs. manual resources</h3>
+<p>This <a href="https://www.hashicorp.com/en/resources/terraform-config-drift-how-to-handle-out-of-band-infrastructure-changes">"out-of-band" change</a> (working outside Terraform) creates three common scenarios.</p>
+<h4 id="scenario-1-unmanaged-resource">Scenario 1: "Unmanaged" resource</h4>
+<p>You create a new, separate resource in the portal. For example, your Terraform manages <code>Resource-A</code>, and you manually create <code>Resource-B</code>.</p>
+<ul>
+<li><strong>Interaction:</strong> When you run <code>terraform plan</code>, Terraform reads its state file, sees it's supposed to manage <code>Resource-A</code>, and checks that <code>Resource-A</code> matches the code. It <strong>does not know or care</strong> that <code>Resource-B</code> exists.</li>
+<li><strong>Result:</strong> The plan will show <strong>"No changes."</strong> Your manually-created resource is safe and completely ignored by Terraform.</li>
+</ul>
+<h4 id="scenario-2-configuration-drift">Scenario 2: "Configuration drift"</h4>
+<p>You go into the portal and <strong>modify a resource that Terraform <em>does</em> manage.</strong> For example, your code defines a database SKU as "Standard", and you manually change it to "Premium" in the portal.</p>
+<ul>
+<li><strong>Interaction:</strong> When you run <code>terraform plan</code>, Terraform reads its state (which says "Standard") and compares it to the <em>actual</em> resource in Azure (which is now "Premium"). Terraform identifies this difference.</li>
+<li><strong>Result:</strong> The plan will show one resource "to be updated." If you run <code>terraform apply</code>, Terraform will <strong>"fix" the drift</strong> by changing the SKU <em>back to "Standard"</em>, wiping out your manual change since Terraform's code is always the source of truth.</li>
+</ul>
+<h4 id="scenario-3-name-collision">Scenario 3: "Name collision"</h4>
+<p>You manually create a resource, (e.g., a storage account named <code>myteststorage</code>). Later, you (or a teammate) add a <em>new</em> resource to your Terraform code with that <em>exact same name</em>.</p>
+<ul>
+<li><strong>Interaction:</strong> You run <code>terraform plan</code>. The plan will show one resource "to be created."</li>
+<li><strong>Result:</strong> When you run <code>terraform apply</code>, it will <strong>fail</strong>. Azure's API will return a <code>ResourceAlreadyExists</code> error. Terraform will not automatically "take over" the resource; it only knows how to create one, and it can't. This scenario is the primary reason for Terraform's "Import" workflow, similar to the storage account creation step described in the <a href="#deploying-resources">Deploying Resources</a> section.</li>
+</ul>
+<h3 id="workflow-deleting-your-manual-resources">Workflow: Deleting your manual resources</h3>
+<p>Ater you're done testing, you can start the "cleanup" phase.</p>
+<ol>
+<li><strong>Identify the Resources:</strong> You must manually track what you created. The easiest way is to put all your test resources into a single, separate <strong>Resource Group</strong> (e.g., <code>rg-my-temp-tests</code>).</li>
+<li><strong>Delete the Resources:</strong><ul>
+<li><strong>If you used a separate resource group:</strong> Simply delete that one resource group in the Azure Portal. Everything inside it will be deleted. This is the cleanest method.</li>
+<li><strong>If you scattered resources:</strong> You must go to the portal and delete each resource one by one.</li>
+</ul>
+</li>
+<li><strong>Run <code>terraform plan</code>:</strong> After deleting, run <code>plan</code> again. It should still show <strong>"No changes,"</strong> proving that your cleanup didn't affect your Terraform-managed infrastructure.</li>
+</ol>
+<h3 id="workflow-keep-importing-your-manual-resources">Workflow: Keep importing your manual resources</h3>
+<p>You created a resource, liked it, and now want Terraform to manage it.</p>
+<h4 id="step-1-write-the-terraform-code">Step 1: Write the Terraform code</h4>
+<p>Go to your <code>.tf</code> files and write a new <code>resource</code> block that <strong>exactly matches</strong> the resource you created in the portal. You must match the <code>name</code>, <code>location</code>, <code>sku</code>, and all other relevant arguments.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># In, for example, your storage.tf file</span>
+<span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;azurerm_storage_account&quot;</span><span class="w"> </span><span class="nv">&quot;my_new_sa&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">name</span><span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;myteststorage&quot;</span><span class="c1"> # Must match portal</span>
+<span class="w">  </span><span class="na">resource_group_name</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;rg-aca-web&quot;</span>
+<span class="w">  </span><span class="na">location</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;West US&quot;</span>
+<span class="w">  </span><span class="na">account_tier</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Standard&quot;</span><span class="c1">    # Must match portal</span>
+<span class="w">  </span><span class="na">account_replication_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;LRS&quot;</span><span class="c1">       # Must match portal</span>
+<span class="c1">  # ... and so on</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="step-2-find-the-resource-id">Step 2: Find the resource ID</h4>
+<p>Go to the Azure Portal, find your resource, and copy its full <strong>resource ID</strong>. It will look like this:
+<code>/subscriptions/your-sub-id/resourceGroups/rg-aca-web/providers/Microsoft.Storage/storageAccounts/myteststorage</code></p>
+<h4 id="step-3-run-terraform-import">Step 3: Run <code>terraform import</code></h4>
+<p>In your terminal, run the <code>import</code> command using your <strong>Terraform address</strong> (from Step 1) and the <strong>Azure ID</strong> (from Step 2).</p>
+<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>import<span class="w"> </span>azurerm_storage_account.my_new_sa<span class="w"> </span>/subscriptions/your-sub-id/resourceGroups/rg-aca-web/providers/Microsoft.Storage/storageAccounts/myteststorage
+</code></pre></div>
+<p>Terraform will connect to Azure, read the resource, and write it into your <code>terraform.tfstate</code> file.</p>
+<h4 id="step-4-verify-with-terraform-plan">Step 4: Verify with <code>terraform plan</code></h4>
+<p>This is the most important step. Run <code>terraform plan</code>.</p>
+<ul>
+<li><strong>If it shows "No changes."</strong>: You are done. Your code from Step 1 exactly matched the imported resource. It is now fully managed.</li>
+<li><strong>If it shows "Changes to be applied."</strong>: This is very common. It means your code from Step 1 <em>doesn't</em> exactly match. For example, the plan might want to change <code>account_tier</code> from "Standard" to "Premium". <strong>Do not run <code>apply</code></strong>. Instead, go back to your <code>.tf</code> file and <em>fix your code</em> to match what was imported (e.g., change the tier in your code to "Standard").</li>
+<li>Run <code>terraform plan</code> again. Repeat until it says "No changes."</li>
+</ul>
+<h3 id="monitoring-a-container-app">Monitoring a Container App</h3>
+<p>Azure Monitor collects and aggregates the data from every layer and component of your system across multiple Azure and non-Azure subscriptions and tenants. It stores it in a common data platform for consumption by a common set of tools that can correlate, analyze, visualize, and/or respond to the data.</p>
+<p>We will focus on the following setup:</p>
+<ul>
+<li>Azure Monitor</li>
+<li>Opentelemetry to instrument the web app<ul>
+<li>details</li>
+</ul>
+</li>
+<li>Application Insights</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.path", "navigation.sections", "navigation.tracking", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

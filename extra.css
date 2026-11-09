@@ -1,0 +1,4 @@
+/* Hide only the TOC title on the right sidebar */
+.md-nav--secondary .md-nav__title {
+  display: none;
+}
