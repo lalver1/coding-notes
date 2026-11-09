@@ -1,89 +1,135 @@
 # Rewriting history
 
-## One
-
 ## Undoing commits
 
-# Using tags for Versioning in Git
+## Editing commits
 
-## Steps to release a version following [SemVer](https://semver.org/)
+## Fixing up commits
 
-Assuming a forking workflow:
+## Rebasing during a branching workflow
 
-1. Pull latest `main` branch from `upstream` repo (and update our fork while we are at it)
+In a branching workflow, it's common to concurrently work on 2 different units of work, say in branches `A` and `B` (where `B` depends on code being introduced in `A`) but `A` will not be immediately merged into `main`. This creates a little bit of overhead when we update branch `A` and consequently need to update branch `B`. The situations outlined below are very common.
 
-```
-git pull upstream main
-git push origin main
-```
+### 1. Simple Rebase (Branch `A` Has More Commits)
 
-2. Create branch to prepare new release
+Use this when `B` was branched off `A`, you committed work to `B`, and then added more commits to `A`.
 
-```
-git switch -c prepare-release
-```
+#### Git Graph
 
-3. Update **p**yproject.toml, **C**HANGELOG, **R**EADME.
+```text
+Before:
+A: --- A1 --- A2 (HEAD)
+        \
+B:       B1 (HEAD)
 
-- pyproject.toml
-
-```
-[tool.poetry]
-name = "project-name"
-version = "MAJOR.MINOR.PATCH"
-```
-
-- CHANGELOG.md
-
-```
-## [MAJOR.MINOR.PATCH] - YYYY-MM-DD
-
-### Added
-
-- Items
-
-[MAJOR.MINOR.PATCH]:
-  https://github.com/organization/project/releases/tag/MAJOR.MINOR.PATCH
-```
-
-- README.md
-
-```
-Install the application using `pip`:
-
-pip install git+https://github.com/organization/project@MAJOR.MINOR.PATCH
+After:
+A: --- A1 --- A2
+               \
+B:              B1' (HEAD)
 
 ```
 
-4. Commit using this sample commit message
+#### Commands
 
-```
-Prepare codebase for MAJOR.MINOR.PATCH release
+```bash
+# 1. Switch to branch B
+git switch B
 
-Prepares the codebase for the MAJOR.MINOR.PATCH release.
-```
-
-5. Create PR with a required reviewer
-
-```
-gh pr create --fill -a @me -r reviewer'sgithubaccount
+# 2. Rebase B onto the tip of A
+git rebase A
 ```
 
-6. After PR is approved, update `main` branch (and update our fork while we are at it)
+### 2. Rebase `A` onto `main`, then rebase `B` onto updated `A` (`B` branched from tip of old `A`)
+
+Use this when `B` branched off the _tip_ of `A` (`A2`), `main` moved forward, and you rebase `A` onto `main`. Because `A`'s commit hashes change during the rebase, you must prune old `A` history when updating `B`.
+
+#### Git Graph
+
+```text
+1. Initial State:
+main: --- M1 --- M2 (latest)
+           \
+A:          A1 --- A2
+                     \
+B:                    B1
+
+2. After rebasing A onto main (git switch A && git rebase main):
+main: --- M1 --- M2 --- A1' --- A2' (A)
+           \
+(old A):    A1 --- A2
+                     \
+B:                    B1 (B)
+
+3. Final State after rebasing B onto new A:
+main: --- M1 --- M2 --- A1' --- A2' (A)
+                                   \
+B:                                  B1' (B)
 
 ```
-git pull upstream main
-git push origin main
+
+#### Commands
+
+```bash
+# Step 1: Rebase A onto the updated main branch
+git switch A
+git rebase main
+
+# Step 2: Rebase B onto the new A
+git switch B
+
+# Option A: Using the commit hash of old A2 directly (available in git graph since it is still "part of branch B")
+git rebase --onto A <commit-hash-of-old-A2>
+
+# Option B: Using reflog (if run immediately after step 1, A@{1} is old A2)
+git rebase --onto A A@{1}
 ```
 
-7. Create the current version's tag
+### 3. Branch `B` branched from an older commit of `A` (`switch`-first approach)
+
+Use this when `B` branched off an intermediate commit `A1` (which was the tip at that time), you later added `A2` to branch `A`, and then rebased `A` onto `main`.
+
+#### Git Graph
+
+```text
+1. Initial State:
+main: --- M1 --- M2 (latest)
+           \
+A:          A1 --- A2
+             \
+B:            B1
+
+2. After rebasing A onto main (git switch A && git rebase main):
+main: --- M1 --- M2 --- A1' --- A2' (A)
+           \
+(old A):    A1 --- A2
+             \
+B:            B1 (B)
+
+3. Final State after rebasing B onto new A:
+main: --- M1 --- M2 --- A1' --- A2' (A)
+                                   \
+B:                                  B1' (B)
 
 ```
-git tag -am MAJOR.MINOR.PATCH "MAJOR.MINOR.PATCH"
+
+#### Commands
+
+```bash
+# Step 1: Rebase A onto main
+git switch A
+git rebase main
+
+# Step 2: Switch to branch B
+git switch B
+
+# Step 3: Find the commit hash of old A1 (the commit right before B's first commit)
+git log --oneline
+
+# Step 4: Replay only B's unique commits onto the tip of updated A
+# Syntax: git rebase --onto <new-parent> <cut-off-point>
+git rebase --onto A <commit-hash-of-old-A1>
 ```
 
-8. Push tags upstream
+#### Rule of thumb for `--onto`
 
-```
-git push upstream --tags
-```
+When rewriting upstream history, `git rebase --onto <destination> <last-commit-to-discard>` lets you extract commits without dragging along obsolete base commits.
